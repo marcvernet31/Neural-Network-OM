@@ -1,0 +1,22 @@
+function [wo, niter] = uo_SGM(gL,Xtr, ytr, isg_m, isg_al0, isg_k, kmax, la)
+    k = 0; al = 1; al_sg = 0.01 * isg_al0;
+    gLS = @(w) 2*sig(XtrS)*((y(XtrS,w)-ytrS).*y(XtrS,w).*(1-y(XtrS,w)))'+la*w;
+
+    while k < kmax
+        minibatch = randi(size(Xtr, 2), round(size(Xtr, 2) * isg_m), 1);
+        XtrS = Xtr(:,minibatch);
+        ytrS = ytr(:,minibatch);
+        
+        d = -(1/(size(XtrS, 2))) * gLS(w);
+        
+        
+        if(k <= isg_k)
+            al = (1 - (k/isg_k)) * isg_al0 + (k/isg_k) * al_sg;
+        elseif(k > isg_k)
+            al = al_sg;
+        end
+
+        k = k + 1;
+    end
+end
+
