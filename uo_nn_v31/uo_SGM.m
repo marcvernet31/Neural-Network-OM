@@ -1,5 +1,5 @@
-function [wo, niter] = uo_SGM(w, gL,Xtr, ytr, sg_ga1, sg_al0, sg_ga2, kmax, la)
-    wo = w;
+function [wk, niter] = uo_SGM(w,Xtr, ytr, sg_ga1, sg_al0, sg_ga2, kmax, la)
+    wk = w;
     k = 0; k_sg = floor(kmax * sg_ga2);
     al = 1; al_sg = 0.01 * sg_al0;
     sig = @(X) 1./(1+exp(-X)); 
@@ -12,7 +12,7 @@ function [wo, niter] = uo_SGM(w, gL,Xtr, ytr, sg_ga1, sg_al0, sg_ga2, kmax, la)
         gLS = @(w) 2*sig(XtrS)*((y(XtrS,w)-ytrS).*y(XtrS,w).*(1-y(XtrS,w)))'+la*w;
         
         %descend direction
-        d = -(1/(size(XtrS, 2))) * gLS(w);
+        d = -(1/(size(XtrS, 2))) * gLS(wk);
         
         %alpha
         if(k <= k_sg)
@@ -21,7 +21,7 @@ function [wo, niter] = uo_SGM(w, gL,Xtr, ytr, sg_ga1, sg_al0, sg_ga2, kmax, la)
             al = al_sg;
         end
 
-        wo = wo + al*d;
+        wk = wk + al*d;
         k = k + 1;
     end
     niter = k;

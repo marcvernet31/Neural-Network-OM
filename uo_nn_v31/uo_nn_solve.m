@@ -48,7 +48,7 @@ function [Xtr,ytr,wo,fo,tr_acc,Xte,yte,te_acc,niter,tex] = uo_nn_solve(num_targe
     
     t1=clock;
     if(isd == 4)
-        [wo, niter] = uo_SGM(w, gL, Xtr, ytr, sg_ga1, sg_al0, sg_ga2, kmax, la);
+        [wo, niter] = uo_SGM(w, Xtr, ytr, sg_ga1, sg_al0, sg_ga2, kmax, la);
     else
         [wo, niter] = uo_nn_optimize(w,L,gL,epsG,kmax, ialmax,c1,c2,isd,icg,irc,nu, kmaxBLS,epsal);
     end
