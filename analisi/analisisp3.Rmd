@@ -1,0 +1,102 @@
+---
+title: "Resultats"
+output: html_notebook
+---
+
+```{r}
+setwd(".")
+filename = "uo_nn_batch_425924225-223314308.csv"
+data = read.csv(filename, header = T, sep = ";")
+head(data)
+```
+
+Passem les variables la i isd a factors
+
+```{r}
+#data$la = as.factor(data$la)
+#data$isd = as.factor(data$isd)
+# data$num_target = as.factor(data$num_target)
+```
+
+fem uns plotitos
+
+```{r}
+boxplot.33 = function(data, variable) {
+  par(mfrow=c(3,3))
+  boxplot(variable[data$isd==1 & data$la==0])
+  boxplot(variable[data$isd==1 & data$la==1])
+  boxplot(variable[data$isd==1 & data$la==10])
+
+  boxplot(variable[data$isd==3 & data$la==0])
+  boxplot(variable[data$isd==3 & data$la==1])
+  boxplot(variable[data$isd==3 & data$la==10])
+
+  boxplot(variable[data$isd==4 & data$la==0])
+  boxplot(variable[data$isd==4 & data$la==1])
+  boxplot(variable[data$isd==4 & data$la==10])
+  }
+```
+
+
+```{r}
+boxplot.33(data, data$L.)
+
+```
+
+```{r}
+col.func = function(i) {
+  if (i == 1) return("firebrick")
+  else if (i == 3) return("red4")
+  else return("blue")
+}
+
+points.func = function(i) {
+  if (i == 0) return(2)
+  else if (i == 1) return(0)
+  else return(3)
+}
+```
+
+
+```{r}
+for (sd in c(1, 3, 4)) {
+  main.t = c("GM","", "QN", "SGM")
+  plot(c(0,9), c(max(data$L.[data$isd==sd]+10), min(data$L.[data$isd==sd])), ty="n", xlab="num target", ylab = "L*", main = main.t[sd])
+  legend(0, max(data$L.[data$isd==sd])+10, c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
+  for (lambda in c(0, 1, 10))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$L.[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+}
+```
+
+```{r}
+for (sd in c(1, 3, 4)) {
+  main.t = c("GM","", "QN", "SGM")
+  plot(c(0,9), c(max(data$niter[data$isd==sd]), min(data$niter[data$isd==sd])), ty="n", xlab="num target", ylab = "niter", main = main.t[sd])
+  legend(0, max(data$niter[data$isd==sd])-10, c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
+  for (lambda in c(0, 1, 10))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$niter[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+}
+```
+
+
+```{r}
+for (sd in c(1, 3, 4)) {
+  main.t = c("GM","", "QN", "SGM")
+  plot(c(0,9), c(max(data$tex[data$isd==sd]), min(data$tex[data$isd==sd])), ty="n", xlab="num target", ylab = "tex", main = main.t[sd])
+  legend(0, max(data$tex[data$isd==sd]), c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
+  for (lambda in c(0, 1, 10))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$tex[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+}
+```
+
+```{r}
+for (sd in c(1, 3, 4)) {
+  main.t = c("GM","", "QN", "SGM")
+  y = data$tex / data$niter
+  plot(c(0,9), c(max(y[data$isd==sd]), min(y[data$isd==sd])), ty="n", xlab="num target", ylab = "tex / niter", main = main.t[sd])
+  legend(0, max(y[data$isd==sd]), c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
+  for (lambda in c(0, 1, 10))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), y[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+}
+```
+
