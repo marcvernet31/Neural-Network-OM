@@ -51,52 +51,74 @@ col.func = function(i) {
 }
 
 points.func = function(i) {
-  if (i == 0) return(2)
-  else if (i == 1) return(0)
+  if (i == 1) return(2)
+  else if (i == 3) return(0)
   else return(3)
 }
 ```
 
+### Convergence
 
 ```{r}
-for (sd in c(1, 3, 4)) {
-  main.t = c("GM","", "QN", "SGM")
-  plot(c(0,9), c(max(data$L.[data$isd==sd]+10), min(data$L.[data$isd==sd])), ty="n", xlab="num target", ylab = "L*", main = main.t[sd])
-  legend(0, max(data$L.[data$isd==sd])+10, c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
-  for (lambda in c(0, 1, 10))
-    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$L.[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+for (lambda in c(0, 1, 10)) {
+  main.t = c("lambda = 0","lambda = 1", "", "", "", "", "", "", "", "","lambda = 10")
+  plot(c(0,9), c(max(data$L.[data$la==lambda])*1.1, min(data$L.[data$la==lambda])), ty="n", xlab="num target", ylab = "L*", main = main.t[lambda+1])
+  legend(0, max(data$L.[data$la==lambda])*1.1, c("GM", "QNM", "SGM"), col = c("firebrick", "red4", "blue"), pch= 19)
+  for (sd in c(1, 3, 7))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$L.[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(sd))
 }
 ```
 
 ```{r}
-for (sd in c(1, 3, 4)) {
-  main.t = c("GM","", "QN", "SGM")
-  plot(c(0,9), c(max(data$niter[data$isd==sd]), min(data$niter[data$isd==sd])), ty="n", xlab="num target", ylab = "niter", main = main.t[sd])
-  legend(0, max(data$niter[data$isd==sd])-10, c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
-  for (lambda in c(0, 1, 10))
-    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$niter[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+for (lambda in c(0, 1, 10)) {
+  main.t = c("lambda = 0","lambda = 1", "", "", "", "", "", "", "", "","lambda = 10")
+  plot(c(0,9), c(max(data$niter[data$la==lambda])*1.1, min(data$niter[data$la==lambda])), ty="n", xlab="num target", ylab = "niter", main = main.t[lambda+1])
+  legend(0, max(data$niter[data$la==lambda])*1.1, c("GM", "QNM", "SGM"), col = c("firebrick", "red4", "blue"), pch= 19)
+  for (sd in c(1, 3, 7))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$niter[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(sd))
 }
 ```
 
 
 ```{r}
-for (sd in c(1, 3, 4)) {
-  main.t = c("GM","", "QN", "SGM")
-  plot(c(0,9), c(max(data$tex[data$isd==sd]), min(data$tex[data$isd==sd])), ty="n", xlab="num target", ylab = "tex", main = main.t[sd])
-  legend(0, max(data$tex[data$isd==sd]), c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
-  for (lambda in c(0, 1, 10))
-    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$tex[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+for (lambda in c(0, 1, 10)) {
+  main.t = c("lambda = 0","lambda = 1", "", "", "", "", "", "", "", "","lambda = 10")
+  plot(c(0,9), c(max(data$tex[data$la==lambda])*1.1, min(data$tex[data$la==lambda])), ty="n", xlab="num target", ylab = "tex", main = main.t[lambda+1])
+  legend(0, max(data$tex[data$la==lambda])*1.1, c("GM", "QNM", "SGM"), col = c("firebrick", "red4", "blue"), pch= 19)
+  for (sd in c(1, 3, 7))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$tex[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(sd))
 }
 ```
 
 ```{r}
-for (sd in c(1, 3, 4)) {
-  main.t = c("GM","", "QN", "SGM")
-  y = data$tex / data$niter
-  plot(c(0,9), c(max(y[data$isd==sd]), min(y[data$isd==sd])), ty="n", xlab="num target", ylab = "tex / niter", main = main.t[sd])
-  legend(0, max(y[data$isd==sd]), c("la = 0", "la = 1", "la = 10"), pch = c(2, 0, 3))
-  for (lambda in c(0, 1, 10))
-    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), y[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(lambda))
+for (lambda in c(0, 1, 10)) {
+  data$y = data$tex / data$niter
+  main.t = c("lambda = 0","lambda = 1", "", "", "", "", "", "", "", "","lambda = 10")
+  plot(c(0,9), c(max(data$y[data$la==lambda])*1.5, min(data$y[data$la==lambda])), ty="n", xlab="num target", ylab = "tex/niter", main = main.t[lambda+1])
+  legend(0, max(data$y[data$la==lambda])*1.5, c("GM", "QNM", "SGM"), col = c("firebrick", "red4", "blue"), pch= 19)
+  for (sd in c(1, 3, 7))
+    lines(sort(data$num_target[data$isd==sd & data$la==lambda]), data$y[data$isd==sd & data$la==lambda], ty="b", col = col.func(sd), pch= points.func(sd))
 }
+```
+
+### Accuracy
+
+```{r}
+targets = c(0:9)
+avg.acc.tar = c(0:9)
+for (i in avg.acc.tar) {
+  acc = mean(data$te_acc[data$num_target == i])
+  avg.acc.tar[i+1] = acc
+}
+
+
+
+plot(data$num_target, data$te_acc, xlab="", ylab="", main="")
+lines(targets, avg.acc.tar)
+# boxplot(data$te_acc ~ data$num_target, add=T)
+```
+
+```{r}
+boxplot(data$te_acc ~ data$num_target, add=T)
 ```
 
